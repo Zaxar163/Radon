@@ -18,6 +18,7 @@
 
 package me.itzsomebody.radon;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,6 +52,7 @@ import me.itzsomebody.radon.utils.RandomUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.JSRInlinerAdapter;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 /**
@@ -182,8 +184,7 @@ public class Radon {
             if (file.exists()) {
                 Main.info(String.format("Loading library \"%s\".", file.getAbsolutePath()));
 
-                try {
-                    ZipFile zipFile = new ZipFile(file);
+                try (ZipFile zipFile = new ZipFile(file)) {
                     Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
                     while (entries.hasMoreElements()) {
@@ -216,8 +217,7 @@ public class Radon {
         if (input.exists()) {
             Main.info(String.format("Loading input \"%s\".", input.getAbsolutePath()));
 
-            try {
-                ZipFile zipFile = new ZipFile(input);
+            try (ZipFile zipFile = new ZipFile(input)) {
                 Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
                 while (entries.hasMoreElements()) {
@@ -266,6 +266,61 @@ public class Radon {
         }
     }
 
+    private ClassWrapper returnClazz(String ref) {
+        ClassWrapper clazz = classPath.get(ref);
+        if (clazz == null) {
+        	if (Boolean.getBoolean("radon.noUseJVMCP")) throw new MissingClassException(ref + " does not exist in classpath!");
+        	InputStream in = Radon.class.getResourceAsStream('/' + ref + ".class");
+        	if (in == null)
+        		throw new MissingClassException(ref + " does not exist in classpath!");
+            try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[8192];
+                for (int length = in.read(buffer); length >= 0; length = in.read(buffer)) {
+                    output.write(buffer, 0, length);
+                }
+                in.close();
+                ClassReader r = new ClassReader(output.toByteArray());
+                ClassNode toRet = new ClassNode();
+                r.accept(toRet, 0);
+                clazz = new ClassWrapper(toRet, true);
+            } catch (IOException e) {
+                try {
+					in.close();
+				} catch (IOException e1) {
+				}
+        		throw new MissingClassException(ref + " does not exist in classpath!");
+			}
+        }
+        return clazz;
+    }
+    
+    public ClassWrapper returnClazzS(String ref) {
+        ClassWrapper clazz = classPath.get(ref);
+        if (clazz == null) {
+        	if (Boolean.getBoolean("radon.noUseJVMCP")) throw new MissingClassException(ref + " does not exist in classpath!");
+        	InputStream in = Radon.class.getResourceAsStream('/' + ref + ".class");
+        	if (in == null)
+        		return clazz;
+            try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[8192];
+                for (int length = in.read(buffer); length >= 0; length = in.read(buffer)) {
+                    output.write(buffer, 0, length);
+                }
+                in.close();
+                ClassReader r = new ClassReader(output.toByteArray());
+                ClassNode toRet = new ClassNode();
+                r.accept(toRet, 0);
+                clazz = new ClassWrapper(toRet, true);
+            } catch (IOException e) {
+                try {
+					in.close();
+				} catch (IOException e1) {
+				}
+			}
+        }
+        return clazz;
+    }
+    
     /**
      * Finds {@link ClassWrapper} with given name.
      *
@@ -273,10 +328,7 @@ public class Radon {
      * @throws RadonException if not found.
      */
     public ClassWrapper getClassWrapper(String ref) {
-        if (!classPath.containsKey(ref))
-            throw new RadonException("Could not find " + ref);
-
-        return classPath.get(ref);
+        return returnClazz(ref);
     }
 
     /**
@@ -294,27 +346,28 @@ public class Radon {
         return hierarchy.get(ref);
     }
 
-    private void buildHierarchy(ClassWrapper wrapper, ClassWrapper sub) {
-        if (hierarchy.get(wrapper.getName()) == null) {
-            ClassTree tree = new ClassTree(wrapper);
-
-            if (wrapper.getSuperName() != null) {
-                tree.getParentClasses().add(wrapper.getSuperName());
-
-                buildHierarchy(getClassWrapper(wrapper.getSuperName()), wrapper);
+    private void buildHierarchy(ClassWrapper classWrapper, ClassWrapper sub) {
+    	if (hierarchy.get(classWrapper.classNode.name) == null) {
+            ClassTree tree = new ClassTree(classWrapper);
+            if (classWrapper.classNode.superName != null) {
+                tree.parentClasses.add(classWrapper.classNode.superName);
+                ClassWrapper superClass = returnClazzS(classWrapper.classNode.superName);
+                if (superClass == null) superClass = returnClazz("java/lang/Object");
+                buildHierarchy(superClass, classWrapper);
             }
-            if (wrapper.getInterfaces() != null)
-                wrapper.getInterfaces().forEach(s -> {
-                    tree.getParentClasses().add(s);
-
-                    buildHierarchy(getClassWrapper(s), wrapper);
-                });
-
-            hierarchy.put(wrapper.getName(), tree);
+            if (classWrapper.classNode.interfaces != null && !classWrapper.classNode.interfaces.isEmpty()) {
+                for (String s : classWrapper.classNode.interfaces) {
+                    tree.parentClasses.add(s);
+                    ClassWrapper interfaceClass = returnClazzS(classWrapper.classNode.superName);
+                    if (interfaceClass != null)
+                    	buildHierarchy(interfaceClass, classWrapper);
+                }
+            }
+            hierarchy.put(classWrapper.classNode.name, tree);
         }
-
-        if (sub != null)
-            hierarchy.get(wrapper.getName()).getSubClasses().add(sub.getName());
+        if (sub != null) {
+            hierarchy.get(classWrapper.classNode.name).subClasses.add(sub.classNode.name);
+        }
     }
 
     public void buildInheritance() {

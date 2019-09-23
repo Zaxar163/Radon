@@ -42,7 +42,7 @@ public class ClassWrapper {
     private static final int INPUT_FLAGS = ClassReader.SKIP_FRAMES;
     private static final String DEFAULT_ENTRY_PREFIX = "";
 
-    private ClassNode classNode;
+    public ClassNode classNode;
     private final String originalName;
     private final boolean libraryNode;
 

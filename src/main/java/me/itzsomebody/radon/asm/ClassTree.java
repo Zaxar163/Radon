@@ -28,8 +28,8 @@ import java.util.Set;
  */
 public class ClassTree {
     private final ClassWrapper classWrapper;
-    private final Set<String> parentClasses = new HashSet<>();
-    private final Set<String> subClasses = new HashSet<>();
+    public final Set<String> parentClasses = new HashSet<>();
+    public final Set<String> subClasses = new HashSet<>();
 
     /**
      * Creates a ClassTree object.
