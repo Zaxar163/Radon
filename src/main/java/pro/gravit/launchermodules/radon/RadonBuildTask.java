@@ -2,6 +2,7 @@ package pro.gravit.launchermodules.radon;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class RadonBuildTask implements LauncherBuildTask {
     @Override
     public Path process(Path inputFile) throws IOException {
     	Path outputFile = srv.launcherBinary.nextLowerPath(this);
+    	Files.deleteIfExists(outputFile);
     	if (!IOHelper.isFile(config)) UnpackHelper.unpack(this.getClass().getClassLoader().getResource("radonCfg.yml"), config);
     	Configuration p = new Configuration(IOHelper.newInput(config));
     	ObfuscationConfiguration info = ObfuscationConfiguration.from(p);
