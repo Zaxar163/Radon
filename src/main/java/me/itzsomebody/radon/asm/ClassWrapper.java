@@ -248,7 +248,7 @@ public class ClassWrapper {
         ClassWriter writer = new CustomClassWriter(ClassWriter.COMPUTE_FRAMES, radon);
 
         try {
-            writer.newUTF8("RADON" + Main.VERSION);
+            //writer.newUTF8("RADON" + Main.VERSION);
 
             // Populate writer with class info
             classNode.accept(writer);
@@ -262,7 +262,7 @@ public class ClassWrapper {
             t.printStackTrace();
 
             writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-            writer.newUTF8("RADON" + Main.VERSION);
+            //writer.newUTF8("RADON" + Main.VERSION);
 
             classNode.accept(writer);
             strConsts.forEach(writer::newUTF8);

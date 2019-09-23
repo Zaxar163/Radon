@@ -8,15 +8,15 @@ group 'me.itzsomebody'
 version '2.0.0-SNAPSHOT'
 
 defaultTasks 'build'
-sourceCompatibility = 1.8
-def main = 'me.itzsomebody.radon.Main'
+sourceCompatibility = targetCompatibility = 1.8
+def mainClassName = "pro.gravit.launchermodules.radon.ModuleImpl"
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
 jar {
-    manifest { attributes 'Main-Class': main }
+    manifest { attributes 'Module-Main-Class': mainClassName }
 }
 
 repositories {
