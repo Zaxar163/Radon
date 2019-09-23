@@ -1,42 +1,3 @@
-# Optimize the bytecode
-optimizer:
-  # Inline GOTO->GOTO sequences
-  inline_goto_goto: true
-
-  # Inline GOTO->(RETURN/IRETURN/LRETURN/FRETURN/DRETURN/ARETURN) sequences
-  inline_goto_return: true
-
-  # Remove nops
-  remove_nops: true
-
-# Obfuscates the flow of the bytecode
-flow_obfuscation:
-  # Swap out GOTO instructions to create more CFG edges
-  replace_goto: false
-
-  # Insert fake switches in the bytecode more CFG edges
-  insert_bogus_switch_jumps: true
-
-  # Insert fake if-confitions to create more CFG edges
-  insert_bogus_jumps: true
-
-  # Reorder the bytecode by splitting it in half multiple times
-  split_blocks: true
-
-  # Insert fake try-catch blocks (WARNING: will bloat JAR)
-  fake_catch_blocks: true
-
-  # Replace IF_ACMP<EQ/NE> with try-catch blocks
-  mutilate_null_check: true
-
-# Obfuscate API references
-reference_obfuscation:
-  # Hide field gets/sets and method invocations using a slow dynamic invoker
-  hide_with_indy: false
-  
-  # Hide method invocations using a relatively fast dynamic invoker
-  hide_with_fast_indy: true
-
 # Encrypt string constants
 string_encryption:
   # Compute decryption keys based on the context of the decryption call
@@ -45,40 +6,6 @@ string_encryption:
 
   # Pool strings into field
   pool_strings: true
-
-# Apply ACC_SYNTHETIC (0x1000) and ACC_BRIDGE (0x0040) access flags to classes/methods/fields
-hide_code:
-  # Apply ACC_SYNTHETIC (0x1000) access flags
-  hide_classes: false
-
-  # Apply ACC_SYNTHETIC (0x1000) and ACC_BRIDGE (0x0040) access flags
-  hide_methods: false
-
-  # Apply ACC_SYNTHETIC (0x1000) access flags
-  hide_fields: true
-
-# Scramble numerical constants
-number_obfuscation:
-  # Compute XOR keys based on the context
-  context_checking: true
-
-  # Allow Radon to tamper with integers
-  integer_tampering: true
-
-  # Allow Radon to tamper with longs
-  long_tampering: true
-
-  # Allow Radon to tamper with floats
-  float_tampering: true
-
-  # Allow Radon to tamper with doubles
-  double_tampering: true
-
-  # Use bitwise (&, |, ^, <<, >>, >>>) operations to obscure (integers and longs only)
-  bitwise_operations: true
-
-  # Use arithmetic (+, -, *, /, %) operations to obscure
-  arithmetic_operations: true
 
 # Pack the output JAR to reduce size
 packer: false
@@ -102,23 +29,8 @@ corrupt_crc: false
 # Translate the bytecode into a custom instruction set
 virtualizer: false
 
-# Prevent debugging
-anti_debug:
-  message: "02"
-
 # Move static initialization into a static block
 static_initialization: true
-
-# Insert illegal annotations to crash FernFlower
-bad_annotation: true
-
-# Watermark the output JAR to uniquely identify the copy
-watermark:
-  # Message to embed / hide
-  message: "TTT"
-
-  # Key to encrypt the message with
-  key: "HARD2CRACK"
 
 # Level of compression to use on the output JAR
 compression_level: 9
