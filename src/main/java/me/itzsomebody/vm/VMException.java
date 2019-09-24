@@ -19,7 +19,9 @@
 package me.itzsomebody.vm;
 
 public class VMException extends RuntimeException {
-    public VMException() {
+	private static final long serialVersionUID = -5641850319631782456L;
+
+	public VMException() {
         super();
     }
 

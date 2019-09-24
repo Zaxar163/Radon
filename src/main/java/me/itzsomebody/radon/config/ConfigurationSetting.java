@@ -83,10 +83,10 @@ public enum ConfigurationSetting {
     RENAMER(Map.class, new Renamer()),
     BAD_ANNOTATION(Boolean.class, new BadAnnotation());
 
-    private final Class expectedType;
+    private final Class<?> expectedType;
     private final Transformer transformer;
 
-    ConfigurationSetting(Class expectedType, Transformer transformer) {
+    ConfigurationSetting(Class<?> expectedType, Transformer transformer) {
         this.expectedType = expectedType;
         this.transformer = transformer;
     }
@@ -96,7 +96,7 @@ public enum ConfigurationSetting {
      *
      * @return expected class type of the key represented by this {@link ConfigurationSetting}.
      */
-    public Class getExpectedType() {
+    public Class<?> getExpectedType() {
         return expectedType;
     }
 

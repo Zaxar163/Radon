@@ -27,6 +27,7 @@ import org.yaml.snakeyaml.Yaml;
  *
  * @author ItzSomebody
  */
+@SuppressWarnings("rawtypes")
 public final class Configuration {
     private final Map<String, Object> config;
 

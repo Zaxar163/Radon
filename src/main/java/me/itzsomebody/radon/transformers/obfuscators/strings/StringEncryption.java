@@ -170,7 +170,6 @@ public class StringEncryption extends Transformer {
         return sb.toString();
     }
 
-    @SuppressWarnings("Duplicates")
     private ClassNode createDecryptor(MemberNames memberNames) {
         ClassNode cw = new ClassNode();
         FieldVisitor fv;

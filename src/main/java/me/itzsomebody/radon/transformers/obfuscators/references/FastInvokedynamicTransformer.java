@@ -22,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import me.itzsomebody.radon.Main;
 import me.itzsomebody.radon.asm.ClassWrapper;
-import me.itzsomebody.radon.transformers.Transformer;
 import me.itzsomebody.radon.utils.ASMUtils;
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;
@@ -108,7 +107,6 @@ public class FastInvokedynamicTransformer extends ReferenceObfuscation {
         return new String(decryptedChars);
     }
 
-    @SuppressWarnings("Duplicates")
     private static ClassNode createBootstrap(MemberNames memberNames) {
         ClassNode cw = new ClassNode();
         MethodVisitor mv;

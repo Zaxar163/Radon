@@ -139,7 +139,6 @@ public class AntiTamper extends Transformer {
         return new String(encrypted);
     }
 
-    @SuppressWarnings("Duplicates")
     private static ClassNode createDecryptor(MemberNames memberNames) {
         ClassNode cw = new ClassNode();
         MethodVisitor mv;

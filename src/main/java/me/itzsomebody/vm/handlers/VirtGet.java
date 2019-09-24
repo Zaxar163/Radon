@@ -35,8 +35,8 @@ public class VirtGet extends Handler {
         String name = (String) operands[1];
         String typeName = (String) operands[2];
 
-        Class clazz = VM.getClazz(ownerName);
-        Class type = VM.getClazz(typeName);
+        Class<?> clazz = VM.getClazz(ownerName);
+        Class<?> type = VM.getClazz(typeName);
         Field field = VM.getField(clazz, name, type);
 
         if (field == null)

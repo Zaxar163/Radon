@@ -21,7 +21,6 @@ package me.itzsomebody.radon.transformers.obfuscators.numbers;
 import java.util.concurrent.atomic.AtomicInteger;
 import me.itzsomebody.radon.Main;
 import me.itzsomebody.radon.asm.ClassWrapper;
-import me.itzsomebody.radon.transformers.Transformer;
 import me.itzsomebody.radon.utils.ASMUtils;
 import me.itzsomebody.radon.utils.RandomUtils;
 import org.objectweb.asm.FieldVisitor;
@@ -166,7 +165,6 @@ public class ContextCheckObfuscator extends NumberObfuscation {
         return encodeLong(Double.doubleToLongBits(d), hashCode);
     }
 
-    @SuppressWarnings("Duplicates")
     private static ClassNode createConstantDecoder(MemberNames memberNames) {
         ClassNode cw = new ClassNode();
         MethodVisitor mv;

@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 import java.util.zip.Deflater;
 import me.itzsomebody.radon.dictionaries.Dictionary;
 import me.itzsomebody.radon.dictionaries.DictionaryFactory;
-import me.itzsomebody.radon.exceptions.RadonException;
 import me.itzsomebody.radon.exclusions.Exclusion;
 import me.itzsomebody.radon.exclusions.ExclusionManager;
 import me.itzsomebody.radon.transformers.Transformer;

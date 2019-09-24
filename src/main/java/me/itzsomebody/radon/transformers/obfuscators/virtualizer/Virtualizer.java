@@ -128,6 +128,7 @@ public class Virtualizer extends Transformer implements VMOpcodes {
                     getClassPath().put(cw.getName(), cw);
                 }
         }
+        zip.close();
     }
 
     private VirtualizerResult translate(MethodNode methodNode, int offset) {

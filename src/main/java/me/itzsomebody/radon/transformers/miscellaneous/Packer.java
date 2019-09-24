@@ -155,7 +155,6 @@ public class Packer extends Transformer {
         // Not needed
     }
 
-    @SuppressWarnings("Duplicates")
     private ClassNode createPackerEntryPoint(MemberNames memberNames) {
         ClassNode cw = new ClassNode();
         FieldVisitor fv;
