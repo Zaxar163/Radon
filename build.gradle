@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'me.itzsomebody'
-version '2.0.0-SNAPSHOT-m1'
+version '2.0.0-SNAPSHOT-m2'
 
 defaultTasks 'build'
 sourceCompatibility = targetCompatibility = 1.8
