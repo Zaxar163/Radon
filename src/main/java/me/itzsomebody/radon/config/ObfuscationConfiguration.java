@@ -78,8 +78,17 @@ public final class ObfuscationConfiguration {
 
         // DICTIONARY
 
-        String dictionaryName = config.getOrDefault(DICTIONARY, "alphanumeric");
-        obfConfig.setDictionary(DictionaryFactory.get(dictionaryName));
+        try
+        {
+            String dictionaryName = config.getOrDefault(DICTIONARY, "alphanumeric");
+            obfConfig.setDictionary(DictionaryFactory.get(dictionaryName));
+        }
+        catch(ClassCastException e)
+        {
+            // String array charset
+            List<String> dictionaryCharset = config.getOrDefault(DICTIONARY, Collections.emptyList());
+            obfConfig.setDictionary(DictionaryFactory.getCustom(dictionaryCharset));
+        }
 
         // MISC.
 
