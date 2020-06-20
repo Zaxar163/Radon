@@ -19,9 +19,9 @@ public class RadonBuildTask implements LauncherBuildTask {
     private final LaunchServer srv;
     public final Path config;
 
-    public RadonBuildTask(LaunchServer srv) {
+    public RadonBuildTask(LaunchServer srv, ModuleImpl i) {
         this.srv = srv;
-        config = this.srv.dir.resolve("radon.yml");
+        config = this.srv.modulesManager.getConfigManager().getModuleConfigDir(i.getModuleInfo().name).resolve("radon.yml"); // because of .yml extension
     }
 
     @Override
