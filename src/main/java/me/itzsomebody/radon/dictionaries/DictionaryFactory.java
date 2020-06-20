@@ -18,13 +18,16 @@
 
 package me.itzsomebody.radon.dictionaries;
 
+import java.util.List;
+
 public class DictionaryFactory {
     public static Dictionary get(String s) {
         Dictionary[] dictionaries = {
-                new AlphaNumDictionary(),
-                new RandomUnicodeDictionary(),
-                new SpacesDictionary(),
-                new UnrecognizedDictionary()
+            new AlphaNumDictionary(),
+            new RandomUnicodeDictionary(),
+            new SpacesDictionary(),
+            new UnrecognizedDictionary(),
+            new CreeperDictionary()
         };
 
         for (Dictionary dictionary : dictionaries) {
@@ -34,5 +37,9 @@ public class DictionaryFactory {
         }
 
         return new CustomDictionary(s);
+    }
+    
+    public static Dictionary getCustom(List<String> charset) {
+        return new CustomDictionary(charset);
     }
 }
