@@ -1,5 +1,10 @@
-# Radon Java Obfuscator [![Build Status](https://travis-ci.org/ItzSomebody/Radon.svg?branch=master)](https://travis-ci.org/ItzSomebody/Radon) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/07b0849ead3f47f1a6950a0353f43541)](https://www.codacy.com/app/ItzSomebody/Radon?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ItzSomebody/Radon&amp;utm_campaign=Badge_Grade)
+# Radon Java Obfuscator
+## This is GravitLauncher launchserver module to obfuscate resulting Launcher with it.
+* Configure on you own as normal Radon. In/Out and libs are specified automatically...
+* Config is located in config dir in folder corresponding module name after first execute of build command (after module being installed)...
+* I am not responsible for any consequences of using this module, and most importantly - for errors caused by it. Yes, you can report issues, but they are unlikely to be fixed (although there are exceptions).
 
+## Info from author...
 ## Radon 2.0 will no longer be maintained - it will be replaced by Radon 3.0
 
 Radon is a Java bytecode obfuscator that I conceptualized in my freshman year
